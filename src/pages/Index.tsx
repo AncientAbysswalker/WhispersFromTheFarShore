@@ -1,14 +1,104 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import { ModeSelector } from '../components/ModeSelector';
+import { ModeExplanation } from '../components/ModeExplanation';
+import { FlashcardGame } from '../components/FlashcardGame';
+import { GameResults } from '../components/GameResults';
+
+type AppState = 
+  | { screen: 'mode-select' }
+  | { screen: 'mode-explanation'; mode: 'mode1' | 'mode2' }
+  | { screen: 'game'; mode: 'mode1' | 'mode2'; gameType: 'random' | 'review'; cardCount?: number }
+  | { screen: 'results'; results: GameResults };
+
+interface GameResults {
+  mode: 'mode1' | 'mode2';
+  gameType: 'random' | 'review';
+  totalCards: number;
+  correctAnswers: number;
+  wrongAnswers: number;
+}
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const [appState, setAppState] = useState<AppState>({ screen: 'mode-select' });
+
+  const handleSelectMode = (mode: 'mode1' | 'mode2') => {
+    setAppState({ screen: 'mode-explanation', mode });
+  };
+
+  const handleStartGame = (gameType: 'random' | 'review', cardCount?: number) => {
+    if (appState.screen === 'mode-explanation') {
+      setAppState({ 
+        screen: 'game', 
+        mode: appState.mode, 
+        gameType, 
+        cardCount 
+      });
+    }
+  };
+
+  const handleGameComplete = (results: GameResults) => {
+    setAppState({ screen: 'results', results });
+  };
+
+  const handlePlayAgain = () => {
+    if (appState.screen === 'results') {
+      const { mode, gameType } = appState.results;
+      const cardCount = gameType === 'review' ? undefined : appState.results.totalCards;
+      setAppState({ screen: 'game', mode, gameType, cardCount });
+    }
+  };
+
+  const handlePlayDifferent = () => {
+    setAppState({ screen: 'mode-select' });
+  };
+
+  const handleBackToModeSelect = () => {
+    setAppState({ screen: 'mode-select' });
+  };
+
+  const handleBackToExplanation = () => {
+    if (appState.screen === 'game') {
+      setAppState({ screen: 'mode-explanation', mode: appState.mode });
+    }
+  };
+
+  switch (appState.screen) {
+    case 'mode-select':
+      return <ModeSelector onSelectMode={handleSelectMode} />;
+    
+    case 'mode-explanation':
+      return (
+        <ModeExplanation 
+          mode={appState.mode}
+          onBack={handleBackToModeSelect}
+          onStartGame={handleStartGame}
+        />
+      );
+    
+    case 'game':
+      return (
+        <FlashcardGame 
+          mode={appState.mode}
+          gameType={appState.gameType}
+          cardCount={appState.cardCount}
+          onBack={handleBackToExplanation}
+          onGameComplete={handleGameComplete}
+        />
+      );
+    
+    case 'results':
+      return (
+        <GameResults 
+          results={appState.results}
+          onPlayAgain={handlePlayAgain}
+          onPlayDifferent={handlePlayDifferent}
+        />
+      );
+    
+    default:
+      return <ModeSelector onSelectMode={handleSelectMode} />;
+  }
 };
 
 export default Index;

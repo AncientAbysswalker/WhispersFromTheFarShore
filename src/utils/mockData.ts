@@ -55,7 +55,7 @@ const simpleCards: Record<string, string> = {
 };
 // --- end generated ---
 
-// Load IPA dictionary dynamically for Mode2
+// Load IPA dictionary dynamically for word mode
 let ipaDict: Record<string, string[]> = {};
 
 // Function to load IPA dictionary
@@ -64,9 +64,9 @@ async function loadIPADict() {
     const response = await fetch("/src/ipa/ipa_dict.json");
     const data = await response.json();
     ipaDict = data;
-    console.log("IPA Dictionary loaded for Mode2:", Object.keys(ipaDict).length, "words");
+    console.log("IPA Dictionary loaded for word mode:", Object.keys(ipaDict).length, "words");
   } catch (error) {
-    console.error("Failed to load IPA dictionary for Mode2:", error);
+    console.error("Failed to load IPA dictionary for word mode:", error);
   }
 }
 
@@ -197,9 +197,13 @@ export const getCards = (
 
 import { generateRuneWordSvg } from "../lib/ruinseeker/generateRuneWordSvg.js";
 
+// Constants for SVG generation modes (legacy system)
+const SVG_MODE_PHONEME = "mode1"; // For simple and combined phonemes
+const SVG_MODE_WORD = "mode2"; // For complete words
+
 // Use RUNEWORD SVG generation for the answer side.
-// For mode1, use only the portion before the whitespace in the key.
-// For mode2, use the full key as the runeword input.
+// For simple/combined modes, use phoneme-based generation.
+// For word mode, use word-based generation.
 export const getSvg = (
   text: string,
   mode: ModeValue = "simple"
@@ -208,20 +212,20 @@ export const getSvg = (
     if (mode === "simple") {
       // For simple mode, only use the portion before the whitespace
       const runeword = text.split(" · ")[0];
-      return generateRuneWordSvg("mode1", runeword);
+      return generateRuneWordSvg(SVG_MODE_PHONEME, runeword);
     } else if (mode === "combined") {
       // For combined mode, extract the phonemes from "ipa1 + ipa2" format and pass as array
       const phonemes = text.split(" + ");
       if (phonemes.length === 2) {
-        return generateRuneWordSvg("mode1", phonemes); // Pass array of phonemes
+        return generateRuneWordSvg(SVG_MODE_PHONEME, phonemes); // Pass array of phonemes
       } else {
         // Fallback if format is unexpected
         const runeword = text.replace(" + ", "");
-        return generateRuneWordSvg("mode1", runeword);
+        return generateRuneWordSvg(SVG_MODE_PHONEME, runeword);
       }
     } else {
       // For word mode, use the full text
-      return generateRuneWordSvg("mode2", text);
+      return generateRuneWordSvg(SVG_MODE_WORD, text);
     }
   } catch (error) {
     console.error("Error generating RuneWord SVG:", error);

@@ -19,9 +19,13 @@ async function loadIPADict() {
 
 const ipaDict = await loadIPADict();
 
+// Constants for internal SVG generation modes
+const MODE_PHONEME = "mode1"; // Phoneme-based generation (simple & combined)
+const MODE_WORD = "mode2"; // Word-based generation
+
 /**
  * Generate a RuneWord SVG for a given text or array of phonemes
- * @param {string} mode - The mode ("mode1" or "mode2")
+ * @param {string} mode - The generation mode (MODE_PHONEME or MODE_WORD)
  * @param {string|string[]} text - The text to generate a RuneWord for, or array of phonemes
  * @returns {string} - The SVG string
  */
@@ -71,7 +75,7 @@ export function generateRuneWordSvg(mode, text) {
     // Create a RuneWord
     let svgString = "";
     console.log(mode);
-    if (mode === "mode1") {
+    if (mode === MODE_PHONEME) {
       draw.rune(props, phonemeArray);
       svgTag.setAttribute("width", 2 * 0.866 * 30 + 4);
       svgTag.setAttribute("height", props.fullHeight);
@@ -79,7 +83,7 @@ export function generateRuneWordSvg(mode, text) {
       // Get the SVG element
       svgString = container.innerHTML;
       console.log(svgString);
-    } else if (mode === "mode2") {
+    } else if (mode === MODE_WORD) {
       console.log(textKey);
       const runeWord = draw.runeword(props, textKey);
       console.log("schildren");

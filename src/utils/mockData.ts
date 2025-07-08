@@ -1,4 +1,5 @@
 import { getWrongAnswers } from "./localStorage";
+import { ModeValue } from "@/types/modes";
 
 // Define Card type
 type Card = {
@@ -6,9 +7,9 @@ type Card = {
   subtext: string;
 };
 
-// --- Mode 1 cards generated from phonemes.md ---
+// --- Simple phoneme cards generated from phonemes.md ---
 // Use a more natural key format: "b · /b/" (centered dot with spaces)
-const mode1Cards: Record<string, string> = {
+const simpleCards: Record<string, string> = {
   "b · /b/": "As in beg and bag",
   "d · /d/": "As in doe and deal",
   "f · /f/": "As in fall and fit",
@@ -54,65 +55,109 @@ const mode1Cards: Record<string, string> = {
 };
 // --- end generated ---
 
-// Store as mapping: text -> subtext
-const mode2Cards: Record<string, string> = {
-  Laptop: "Portable computer",
-  Monitor: "Displays output",
-  Keyboard: "Input device",
-  Mouse: "Pointer device",
-  Headphones: "Audio output",
-  Speaker: "Outputs sound",
-  Microphone: "Captures audio",
-  Router: "For internet connection",
-  Database: "Stores data",
-  Server: "Provides resources",
-  "Cloud Storage": "Online data storage",
-  Network: "Interconnected computers",
-  Security: "Protection against threats",
-  Firewall: "Blocks unauthorized access",
-  Backup: "Copy of data for recovery",
-  Update: "Install the latest version",
-  Algorithm: "A step-by-step procedure",
-  Function: "A block of code that performs a task",
-  Variable: "Stores data values",
-  Array: "A collection of items",
-  Object: "A collection of key-value pairs",
-  Class: "Blueprint for creating objects",
-  Method: "A function associated with an object",
-  Property: "A value associated with an object",
-  Loop: "Repeats a block of code",
-  Condition: "A statement that evaluates to true or false",
-  Boolean: "True or false value",
-  String: "A sequence of characters",
-  Number: "A numeric value",
-  Integer: "A whole number",
-  Float: "A number with decimals",
-  Character: "A single letter or symbol",
-  Input: "Data sent to a program",
-  Output: "Data sent from a program",
-  Process: "A program in execution",
-  Memory: "Stores data for quick access",
-  Storage: "Holds data permanently",
-  CPU: "The brain of the computer",
-  GPU: "Renders images and video",
-  RAM: "Temporary data storage",
-  Binary: "Base-2 number system",
-  Hexadecimal: "Base-16 number system",
-  ASCII: "Character encoding standard",
-  Unicode: "Universal character encoding",
-  Encryption: "Secures data by converting it",
-  Compression: "Reduces file size",
-  Protocol: "Rules for data exchange",
-  API: "Interface for software components",
-  Frontend: "Client-side of a web application",
-  Backend: "Server-side of a web application",
-  Database: "Organized collection of data",
-  Framework: "A structure for building applications",
-  Library: "A collection of pre-written code",
-  Package: "A bundle of software components",
-  Module: "A self-contained unit of code",
-  Component: "A modular part of a system",
-};
+// Load IPA dictionary dynamically for Mode2
+let ipaDict: Record<string, string[]> = {};
+
+// Function to load IPA dictionary
+async function loadIPADict() {
+  try {
+    const response = await fetch("/src/ipa/ipa_dict.json");
+    const data = await response.json();
+    ipaDict = data;
+    console.log("IPA Dictionary loaded for Mode2:", Object.keys(ipaDict).length, "words");
+  } catch (error) {
+    console.error("Failed to load IPA dictionary for Mode2:", error);
+  }
+}
+
+// Load the dictionary immediately
+loadIPADict();
+
+// Consonants from the phonemes table (before vowels)
+const consonants = [
+  { ipa: "b", description: "As in beg and bag" },
+  { ipa: "d", description: "As in doe and deal" },
+  { ipa: "f", description: "As in fall and fit" },
+  { ipa: "ɡ", description: "As in goal and gill" },
+  { ipa: "h", description: "As in has and him" },
+  { ipa: "dʒ", description: "As in job and jolt" },
+  { ipa: "k", description: "As in cap and kite" },
+  { ipa: "ɫ", description: "As in lip and load" },
+  { ipa: "m", description: "As in map and moth" },
+  { ipa: "n", description: "As in net and nip" },
+  { ipa: "p", description: "As in pin and plot" },
+  { ipa: "ɹ", description: "As in run and rope" },
+  { ipa: "s", description: "As in sat and small" },
+  { ipa: "t", description: "As in toe and tale" },
+  { ipa: "v", description: "As in vin and volt" },
+  { ipa: "w", description: "As in wait and wind" },
+  { ipa: "j", description: "As in yam and yet" },
+  { ipa: "z", description: "As in zip and zoo" },
+  { ipa: "tʃ", description: "As in watch and chime" },
+  { ipa: "ʃ", description: "As in shift and short" },
+  { ipa: "ŋ", description: "As in ring and sting" },
+  { ipa: "θ", description: "As in weather and thin" },
+  { ipa: "ð", description: "As in thing and thunder" },
+  { ipa: "ʒ", description: "As in genre and division" }
+];
+
+// Vowels from the phonemes table (ɑɹ and beyond)
+const vowels = [
+  { ipa: "ɑɹ", description: "As in car and far" },
+  { ipa: "ɛɹ", description: "As in fair and chair" },
+  { ipa: "ɪɹ", description: "As in here and steer" },
+  { ipa: "ɔɹ", description: "As in core and door" },
+  { ipa: "ɝ", description: "As in fern and burn" },
+  { ipa: "eɪ", description: "As in day and eight" },
+  { ipa: "i", description: "As in beet and sleep" },
+  { ipa: "aɪ", description: "As in pie and sky" },
+  { ipa: "oʊ", description: "As in boat and row" },
+  { ipa: "æ", description: "As in bat and laugh" },
+  { ipa: "ɛ", description: "As in medical and bread" },
+  { ipa: "ɪ", description: "As in sit and lip" },
+  { ipa: "ɑ", description: "As in swan and hot" },
+  { ipa: "ə", description: "As in shut and cut" },
+  { ipa: "ʊ", description: "As in took and could" },
+  { ipa: "u", description: "As in moon and zoo" },
+  { ipa: "aʊ", description: "As in mouse and cow" },
+  { ipa: "ɔɪ", description: "As in coin and toy" }
+];
+
+// Function to generate combined consonant-vowel pairs
+function getCombinedCards(): Record<string, string> {
+  const cards: Record<string, string> = {};
+  
+  // Create all possible consonant-vowel combinations (both orders)
+  consonants.forEach(consonant => {
+    vowels.forEach(vowel => {
+      // Consonant + Vowel
+      const cvKey = `${consonant.ipa} + ${vowel.ipa}`;
+      cards[cvKey] = `Consonant ${consonant.ipa} (${consonant.description.split(' ')[2]}) + Vowel ${vowel.ipa} (${vowel.description.split(' ')[2]})`;
+      
+      // Vowel + Consonant  
+      const vcKey = `${vowel.ipa} + ${consonant.ipa}`;
+      cards[vcKey] = `Vowel ${vowel.ipa} (${vowel.description.split(' ')[2]}) + Consonant ${consonant.ipa} (${consonant.description.split(' ')[2]})`;
+    });
+  });
+  
+  return cards;
+}
+
+// Store as mapping: text -> subtext (for word mode, subtext is phoneme without spaces)
+function getWordCards(): Record<string, string> {
+  const cards: Record<string, string> = {};
+  
+  // Convert IPA dictionary to the format we need
+  for (const [word, phonemes] of Object.entries(ipaDict)) {
+    if (phonemes && phonemes.length > 0) {
+      // Use the first phoneme variant and remove spaces
+      const phoneme = phonemes[0].replace(/\s+/g, "");
+      cards[word] = phoneme;
+    }
+  }
+  
+  return cards;
+}
 
 // Helper to get shuffled keys
 function getShuffledKeys(obj: Record<string, string>): string[] {
@@ -121,11 +166,19 @@ function getShuffledKeys(obj: Record<string, string>): string[] {
 
 // Returns Card[]
 export const getCards = (
-  mode: "mode1" | "mode2",
+  mode: ModeValue,
   count: number,
   gameType: "random" | "review" = "random"
 ): Card[] => {
-  const cardMap = mode === "mode1" ? mode1Cards : mode2Cards;
+  let cardMap: Record<string, string>;
+  
+  if (mode === "simple") {
+    cardMap = simpleCards;
+  } else if (mode === "combined") {
+    cardMap = getCombinedCards();
+  } else {
+    cardMap = getWordCards();
+  }
   if (gameType === "review") {
     const wrongAnswers = getWrongAnswers(mode);
     if (wrongAnswers.length === 0) return [];
@@ -149,14 +202,27 @@ import { generateRuneWordSvg } from "../lib/ruinseeker/generateRuneWordSvg.js";
 // For mode2, use the full key as the runeword input.
 export const getSvg = (
   text: string,
-  mode: "mode1" | "mode2" = "mode1"
+  mode: ModeValue = "simple"
 ): string => {
   try {
-    // For mode1, only use the portion before the whitespace
-    const runeword = mode === "mode1" ? text.split(" · ")[0] : text;
-
-    // Use the RuneWord class to generate the SVG
-    return generateRuneWordSvg(mode, runeword);
+    if (mode === "simple") {
+      // For simple mode, only use the portion before the whitespace
+      const runeword = text.split(" · ")[0];
+      return generateRuneWordSvg("mode1", runeword);
+    } else if (mode === "combined") {
+      // For combined mode, extract the phonemes from "ipa1 + ipa2" format and pass as array
+      const phonemes = text.split(" + ");
+      if (phonemes.length === 2) {
+        return generateRuneWordSvg("mode1", phonemes); // Pass array of phonemes
+      } else {
+        // Fallback if format is unexpected
+        const runeword = text.replace(" + ", "");
+        return generateRuneWordSvg("mode1", runeword);
+      }
+    } else {
+      // For word mode, use the full text
+      return generateRuneWordSvg("mode2", text);
+    }
   } catch (error) {
     console.error("Error generating RuneWord SVG:", error);
 
@@ -166,10 +232,12 @@ export const getSvg = (
         <svg width="200" height="150" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
           <rect x="10" y="10" width="180" height="130" rx="10" fill="#F3F4F6" stroke="#3B82F6" stroke-width="2"/>
           <text x="100" y="75" text-anchor="middle" font-size="24" fill="#222" font-family="monospace">${
-            mode === "mode1" ? text.split(" · ")[0] : text
+            mode === "simple" ? text.split(" · ")[0] : 
+            mode === "combined" ? text.replace(" + ", "") : text
           }</text>
           <text x="100" y="130" text-anchor="middle" font-size="12" fill="#666">${
-            mode === "mode1" ? "Rune (IPA)" : "Rune (Word)"
+            mode === "simple" ? "Rune (IPA)" : 
+            mode === "combined" ? "Rune (Combined)" : "Rune (Word)"
           }</text>
         </svg>
       </div>

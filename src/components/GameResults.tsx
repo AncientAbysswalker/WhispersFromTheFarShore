@@ -1,13 +1,14 @@
 
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Navigation } from './Navigation';
-import { Trophy, Target, TrendingUp } from 'lucide-react';
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Trophy, Target, TrendingUp } from "lucide-react";
+import { Navigation } from "./Navigation";
+import { GameModeType, getModeDisplayName } from "@/types/modes";
 
 interface GameResults {
-  mode: 'mode1' | 'mode2';
-  gameType: 'random' | 'review';
+  mode: GameModeType;
+  gameType: "random" | "review";
   totalCards: number;
   correctAnswers: number;
   wrongAnswers: number;
@@ -83,7 +84,7 @@ export const GameResults: React.FC<GameResultsProps> = ({ results, onPlayAgain, 
 
             <div className="bg-gray-100 rounded-lg p-4 mb-6">
               <div className="text-sm text-gray-600 mb-2">
-                Mode: <span className="font-semibold">{results.mode.toUpperCase()}</span> | 
+                Mode: <span className="font-semibold">{getModeDisplayName(results.mode)}</span> | 
                 Type: <span className="font-semibold">{results.gameType.charAt(0).toUpperCase() + results.gameType.slice(1)}</span>
               </div>
             </div>

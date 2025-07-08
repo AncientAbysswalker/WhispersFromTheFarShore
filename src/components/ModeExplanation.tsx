@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "./Navigation";
 import { getWrongAnswers } from "../utils/localStorage";
+import { GameMode, GameModeType, getModeDisplayName, getModeValue } from "@/types/modes";
 
 interface ModeExplanationProps {
-  mode: "mode1" | "mode2";
+  mode: GameModeType;
   onBack: () => void;
   onStartGame: (type: "random" | "review", count?: number) => void;
 }
@@ -15,25 +16,39 @@ export const ModeExplanation: React.FC<ModeExplanationProps> = ({
   onBack,
   onStartGame,
 }) => {
-  const wrongAnswers = getWrongAnswers(mode);
+  const wrongAnswers = getWrongAnswers(getModeValue(mode));
   const reviewAvailable = wrongAnswers.length > 0;
 
-  const modeConfig = {
-    mode1: {
-      title: "Simple Phonemes",
-      description:
-        "In this mode, you will practice simple phonemes (one consonant or vowel) in the language of Tunic.",
-      color: "blue",
-    },
-    mode2: {
-      title: "Whole Words",
-      description:
-        "In this mode, you will practice whole words in the language of Tunic.",
-      color: "green",
-    },
+  const getModeConfig = (mode: GameModeType) => {
+    switch (mode) {
+      case GameMode.SIMPLE:
+        return {
+          title: "Simple Phonemes",
+          description: "Practice individual consonants and vowels in the language of Tunic.",
+          color: "blue",
+        };
+      case GameMode.COMBINED:
+        return {
+          title: "Combined Phonemes",
+          description: "Practice complex phoneme combinations and clusters in the language of Tunic.",
+          color: "purple",
+        };
+      case GameMode.WORD:
+        return {
+          title: "Whole Words",
+          description: "Practice complete words in the language of Tunic.",
+          color: "green",
+        };
+      default:
+        return {
+          title: "Unknown Mode",
+          description: "Unknown mode",
+          color: "gray",
+        };
+    }
   };
 
-  const config = modeConfig[mode];
+  const config = getModeConfig(mode);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">

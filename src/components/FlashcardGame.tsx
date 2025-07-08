@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Navigation } from "./Navigation";
 import { getCards, getSvg } from "../utils/mockData";
 import { addWrongAnswer, removeWrongAnswer } from "../utils/localStorage";
+import { GameMode, GameModeType, getModeDisplayName, getModeValue } from "@/types/modes";
 
 interface FlashcardGameProps {
-  mode: "mode1" | "mode2";
+  mode: GameModeType;
   gameType: "random" | "review";
   cardCount?: number;
   onBack: () => void;
@@ -14,7 +15,7 @@ interface FlashcardGameProps {
 }
 
 interface GameResults {
-  mode: "mode1" | "mode2";
+  mode: GameModeType;
   gameType: "random" | "review";
   totalCards: number;
   correctAnswers: number;
@@ -36,7 +37,8 @@ export const FlashcardGame: React.FC<FlashcardGameProps> = ({
   const [hasAnswered, setHasAnswered] = useState(false);
 
   useEffect(() => {
-    const cardObjs = getCards(mode, cardCount, gameType);
+    const modeValue = getModeValue(mode);
+    const cardObjs = getCards(modeValue, cardCount, gameType);
     setCards(cardObjs);
   }, [mode, cardCount, gameType]);
 
@@ -58,7 +60,7 @@ export const FlashcardGame: React.FC<FlashcardGameProps> = ({
         const newCount = prev + 1;
 
         if (gameType === "review") {
-          removeWrongAnswer(mode, currentCard.text);
+          removeWrongAnswer(getModeValue(mode), currentCard.text);
         }
 
         // If this is the last card, complete the game with updated counts
@@ -79,7 +81,7 @@ export const FlashcardGame: React.FC<FlashcardGameProps> = ({
         const newCount = prev + 1;
 
         if (gameType === "random") {
-          addWrongAnswer(mode, currentCard.text);
+          addWrongAnswer(getModeValue(mode), currentCard.text);
         }
 
         // If this is the last card, complete the game with updated counts
@@ -137,7 +139,7 @@ export const FlashcardGame: React.FC<FlashcardGameProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Navigation
-        title={`${mode.toUpperCase()} - ${
+        title={`${getModeDisplayName(mode)} - ${
           gameType.charAt(0).toUpperCase() + gameType.slice(1)
         }`}
         onBack={onBack}
@@ -167,12 +169,12 @@ export const FlashcardGame: React.FC<FlashcardGameProps> = ({
             <CardContent className="h-full flex items-center justify-center p-8">
               {!isFlipped ? (
                 <div className="text-center w-full">
-                  {mode === "mode1" ? (
+                  {mode === GameMode.SIMPLE || mode === GameMode.COMBINED ? (
                     <>
                       <div
                         className="mx-auto mb-4"
                         dangerouslySetInnerHTML={{
-                          __html: getSvg(currentCard.text, mode),
+                          __html: getSvg(currentCard.text, getModeValue(mode)),
                         }}
                       />
                       <div className="text-xs text-gray-400">
@@ -181,12 +183,12 @@ export const FlashcardGame: React.FC<FlashcardGameProps> = ({
                     </>
                   ) : (
                     <>
-                      <div className="text-2xl font-semibold mb-2">
-                        {currentCard.text}
-                      </div>
-                      <div className="text-sm text-gray-500 mb-2">
-                        {currentCard.subtext}
-                      </div>
+                      <div
+                        className="mx-auto mb-4"
+                        dangerouslySetInnerHTML={{
+                          __html: getSvg(currentCard.text, getModeValue(mode)),
+                        }}
+                      />
                       <div className="text-xs text-gray-400">
                         Click to reveal answer
                       </div>
@@ -195,7 +197,7 @@ export const FlashcardGame: React.FC<FlashcardGameProps> = ({
                 </div>
               ) : (
                 <div className="text-center w-full">
-                  {mode === "mode1" ? (
+                  {mode === GameMode.SIMPLE || mode === GameMode.COMBINED ? (
                     <>
                       <div className="text-2xl font-semibold mb-2">
                         {currentCard.text}
@@ -206,14 +208,11 @@ export const FlashcardGame: React.FC<FlashcardGameProps> = ({
                     </>
                   ) : (
                     <>
-                      <div
-                        className="mx-auto mb-4"
-                        dangerouslySetInnerHTML={{
-                          __html: getSvg(currentCard.text, mode),
-                        }}
-                      />
+                      <div className="text-2xl font-semibold mb-2">
+                        {currentCard.text}
+                      </div>
                       <div className="text-sm text-gray-500">
-                        This is the answer
+                        {currentCard.subtext}
                       </div>
                     </>
                   )}

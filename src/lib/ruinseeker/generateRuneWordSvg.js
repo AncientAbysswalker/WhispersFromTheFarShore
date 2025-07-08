@@ -20,14 +20,28 @@ async function loadIPADict() {
 const ipaDict = await loadIPADict();
 
 /**
- * Generate a RuneWord SVG for a given text
- * @param {string} text - The text to generate a RuneWord for
+ * Generate a RuneWord SVG for a given text or array of phonemes
+ * @param {string} mode - The mode ("mode1" or "mode2")
+ * @param {string|string[]} text - The text to generate a RuneWord for, or array of phonemes
  * @returns {string} - The SVG string
  */
 export function generateRuneWordSvg(mode, text) {
+  // Handle array input for combined phonemes
+  let textKey, phonemeArray;
+  
+  if (Array.isArray(text)) {
+    // For combined mode - text is an array of phonemes
+    textKey = text.join(""); // Create a key for the dictionary
+    phonemeArray = text; // Use the array directly
+  } else {
+    // For simple/word mode - text is a string
+    textKey = text.toLowerCase();
+    phonemeArray = [text.toLowerCase()];
+  }
+
   // Create a simple IPA dictionary for the text
   const simpleIpaDict = {
-    [text.toLowerCase()]: [[text.toLowerCase()]],
+    [textKey]: [phonemeArray],
   };
 
   // Create props for the RuneWord
@@ -36,7 +50,7 @@ export function generateRuneWordSvg(mode, text) {
     vowelStyle: vowelStyle.LOW_CIRCLE,
     segmentLength: 30,
     lineWidth: 4,
-    fullHeight: 3 * 30 + 4,
+    fullHeight: 3.5 * 30 + 4,
     innerWidth: 2 * 0.866 * 30, // sin60 = 0.866
     fullWidth: 2 * 0.866 * 30 + 4,
     ipaDict: ipaDict,
@@ -58,21 +72,21 @@ export function generateRuneWordSvg(mode, text) {
     let svgString = "";
     console.log(mode);
     if (mode === "mode1") {
-      draw.rune(props, [text.toLowerCase()]);
+      draw.rune(props, phonemeArray);
       svgTag.setAttribute("width", 2 * 0.866 * 30 + 4);
-      svgTag.setAttribute("height", 3 * 30 + 4);
+      svgTag.setAttribute("height", props.fullHeight);
 
       // Get the SVG element
       svgString = container.innerHTML;
       console.log(svgString);
     } else if (mode === "mode2") {
-      console.log(text);
-      const runeWord = draw.runeword(props, text.toLowerCase());
+      console.log(textKey);
+      const runeWord = draw.runeword(props, textKey);
       console.log("schildren");
       console.log(runeWord.runes.length);
 
       svgTag.setAttribute("width", 2 * 0.866 * 30 * runeWord.runes.length + 4);
-      svgTag.setAttribute("height", 3 * 30 + 4);
+      svgTag.setAttribute("height", props.fullHeight);
 
       svgString = container.innerHTML;
     }

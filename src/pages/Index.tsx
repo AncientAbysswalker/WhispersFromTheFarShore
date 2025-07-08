@@ -4,15 +4,16 @@ import { ModeSelector } from '../components/ModeSelector';
 import { ModeExplanation } from '../components/ModeExplanation';
 import { FlashcardGame } from '../components/FlashcardGame';
 import { GameResults } from '../components/GameResults';
+import { GameModeType } from '../types/modes';
 
 type AppState = 
   | { screen: 'mode-select' }
-  | { screen: 'mode-explanation'; mode: 'mode1' | 'mode2' }
-  | { screen: 'game'; mode: 'mode1' | 'mode2'; gameType: 'random' | 'review'; cardCount?: number }
+  | { screen: 'mode-explanation'; mode: GameModeType }
+  | { screen: 'game'; mode: GameModeType; gameType: 'random' | 'review'; cardCount?: number }
   | { screen: 'results'; results: GameResults };
 
 interface GameResults {
-  mode: 'mode1' | 'mode2';
+  mode: GameModeType;
   gameType: 'random' | 'review';
   totalCards: number;
   correctAnswers: number;
@@ -22,7 +23,7 @@ interface GameResults {
 const Index = () => {
   const [appState, setAppState] = useState<AppState>({ screen: 'mode-select' });
 
-  const handleSelectMode = (mode: 'mode1' | 'mode2') => {
+  const handleSelectMode = (mode: GameModeType) => {
     setAppState({ screen: 'mode-explanation', mode });
   };
 

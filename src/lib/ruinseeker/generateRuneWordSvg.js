@@ -34,11 +34,11 @@ export function generateRuneWordSvg(mode, text) {
   let props = {
     runeStyle: runeStyle.STANDARD,
     vowelStyle: vowelStyle.LOW_CIRCLE,
-    segmentLength: 15,
-    lineWidth: 2,
-    fullHeight: 3 * 15 + 2,
-    innerWidth: 2 * 0.866 * 15, // sin60 = 0.866
-    fullWidth: 2 * 0.866 * 15 + 2,
+    segmentLength: 30,
+    lineWidth: 4,
+    fullHeight: 3 * 30 + 4,
+    innerWidth: 2 * 0.866 * 30, // sin60 = 0.866
+    fullWidth: 2 * 0.866 * 30 + 4,
     ipaDict: ipaDict,
     customIpaDict: {},
   };
@@ -59,8 +59,8 @@ export function generateRuneWordSvg(mode, text) {
     console.log(mode);
     if (mode === "mode1") {
       draw.rune(props, [text.toLowerCase()]);
-      svgTag.setAttribute("width", 2 * 0.866 * 15 + 2);
-      svgTag.setAttribute("height", 3 * 15 + 2);
+      svgTag.setAttribute("width", 2 * 0.866 * 30 + 4);
+      svgTag.setAttribute("height", 3 * 30 + 4);
 
       // Get the SVG element
       svgString = container.innerHTML;
@@ -71,8 +71,8 @@ export function generateRuneWordSvg(mode, text) {
       console.log("schildren");
       console.log(runeWord.runes.length);
 
-      svgTag.setAttribute("width", 2 * 0.866 * 15 * runeWord.runes.length + 2);
-      svgTag.setAttribute("height", 3 * 15 + 2);
+      svgTag.setAttribute("width", 2 * 0.866 * 30 * runeWord.runes.length + 4);
+      svgTag.setAttribute("height", 3 * 30 + 4);
 
       svgString = container.innerHTML;
     }

@@ -12,7 +12,7 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({ onSelectMode }) => {
       <div className="max-w-2xl w-full">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            Flashcard Learning
+            Learning the Language of Tunic
           </h1>
           <p className="text-gray-600 text-lg">
             Choose your study mode to begin

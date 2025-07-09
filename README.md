@@ -1,73 +1,96 @@
-# Welcome to your Lovable project
+# Whisperers From The Far Shore
 
-## Project info
+_A Tunic Language Learning Flashcard Game_
 
-**URL**: https://lovable.dev/projects/b6245c81-64d3-4e3f-a0c2-19495759171c
+## About This Project
 
-## How can I edit this code?
+This project is a flashcard application for learning the fictional language from the indie game "Tunic". Users can practice phonemes, combined phonemes, and whole words using interactive SVG-based flashcards.
 
-There are several ways of editing your application.
+## 🎯 Project Features
 
-**Use Lovable**
+- **Three Learning Modes**:
+  - Simple Phonemes: Individual consonants and vowels
+  - Combined Phonemes: Consonant-vowel combinations
+  - Whole Words: Complete words in the Tunic language
+- **Game Types**:
+  - Random Practice: Study random cards
+  - Review Mode: Focus on previously missed cards
+- **Progress Tracking**: Track correct/incorrect answers
+- **Responsive Design**: Works on desktop and mobile devices
+- **Custom SVG Integration**: Dynamic SVG rendering for language symbols
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/b6245c81-64d3-4e3f-a0c2-19495759171c) and start prompting.
+## 🎮 How to Use
 
-Changes made via Lovable will be committed automatically to this repo.
+1. **Select a Learning Mode**: Choose from Simple Phonemes, Combined Phonemes, or Whole Words
+2. **Choose Game Type**: Practice random cards or review previously missed ones
+3. **Study**: Click cards to flip them and reveal answers
+4. **Rate Yourself**: Mark answers as correct or incorrect
+5. **Track Progress**: View your results and continue learning
 
-**Use your preferred IDE**
+## 🤖 AI Development Experiment
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+This project was **almost completely written with AI** as part of a personal experiment to test the current capabilities of various AI development tools. I wanted to see how well these tools could handle a real-world project with specific requirements.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### AI Tools Used
 
-Follow these steps:
+- **[Lovable](https://lovable.dev)** - Primary development platform
+- **[Cline](https://github.com/cline/cline)** with Claude - VS Code extension for AI-assisted coding
+- **Claude (Anthropic)** - Backend reasoning and problem-solving
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Key Findings
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+#### ✅ What Worked Well
 
-# Step 3: Install the necessary dependencies.
-npm i
+- **Rapid prototyping**: Going from concept to working application in hours
+- **UI/UX implementation**: Excellent at implementing modern React patterns and Tailwind CSS
+- **Code structure**: Generated well-organized, maintainable code with proper TypeScript types
+- **Component logic**: Handled complex state management and React patterns effectively
+- **Styling**: Created responsive, polished interfaces with shadcn/ui components
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+#### ⚠️ Challenges Encountered
 
-**Edit a file directly in GitHub**
+- **Inconsistent behavior**: Sometimes produces odd or plain wrong solutions
+- **Framework integration**: Difficulty with less mainstream libraries, even with documentation
+- **Forgetting framework**: Sometimes AI forgets what frameworks are being used and will do thing manually - such as not using Lucide
+- **Legacy library support**: Had to manually implement SVG.js integration despite it being a known library
+- **Debugging limitations**: Cannot always root cause bugs even with full stack traces and detailed behavior descriptions
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+#### 🔧 Technical Challenges
 
-**Use GitHub Codespaces**
+- **SVG.js Integration**: Despite SVG.js being a well-documented library, the AI struggled with proper integration and I had to manually fix the implementation
+- **State management**: Complex game state transitions sometimes produced unexpected behaviors
+- **Error handling**: Some edge cases weren't properly handled initially
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
+## 🛠️ Technologies Used
 
 This project is built with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **Vite** - Build tool and development server
+- **TypeScript** - Type-safe JavaScript
+- **React** - UI framework
+- **shadcn/ui** - Component library
+- **Tailwind CSS** - Utility-first CSS framework
+- **SVG.js** - SVG manipulation library
+- **React Router** - Client-side routing
+- **Lucide React** - Icon library
 
-## How can I deploy this project?
+## 🐛 Known Issues
 
-Simply open [Lovable](https://lovable.dev/projects/b6245c81-64d3-4e3f-a0c2-19495759171c) and click on Share -> Publish.
+- **Review Mode Crash**: If you finish reviewing cards you previously got wrong and click "Play Again" when there are no cards left to review, the application will crash
+- **SVG Rendering**: Occasional rendering issues with complex SVG elements
 
-## Can I connect a custom domain to my Lovable project?
+## 🚀 Development Setup
 
-Yes, you can!
+### Prerequisites
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```

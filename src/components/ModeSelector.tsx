@@ -10,7 +10,7 @@ interface ModeSelectorProps {
 export const ModeSelector: React.FC<ModeSelectorProps> = ({ onSelectMode }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full">
+      <div className="max-w-4xl w-full">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
             Learning the Language of Tunic
@@ -25,15 +25,17 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({ onSelectMode }) => {
             className="hover:shadow-lg transition-shadow cursor-pointer"
             onClick={() => onSelectMode(GameMode.SIMPLE)}
           >
-            <CardContent className="p-8 text-center">
+            <CardContent className="p-8 text-center flex flex-col h-full justify-between">
               <div className="w-16 h-16 bg-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <span className="text-white font-bold text-xl">1</span>
               </div>
-              <h2 className="text-2xl font-semibold mb-3">Simple Phonemes</h2>
-              <p className="text-gray-600 mb-6">
-                Practice individual consonants and vowels in the language of
-                Tunic
-              </p>
+              <div>
+                <h2 className="text-2xl font-semibold mb-3">Simple Phonemes</h2>
+                <p className="text-gray-600 mb-6">
+                  Practice individual consonants and vowels in the language of
+                  Tunic
+                </p>
+              </div>
               <Button className="w-full">Practice Simple</Button>
             </CardContent>
           </Card>
@@ -42,15 +44,19 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({ onSelectMode }) => {
             className="hover:shadow-lg transition-shadow cursor-pointer"
             onClick={() => onSelectMode(GameMode.COMBINED)}
           >
-            <CardContent className="p-8 text-center">
+            <CardContent className="p-8 text-center flex flex-col h-full justify-between">
               <div className="w-16 h-16 bg-purple-500 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <span className="text-white font-bold text-xl">2</span>
               </div>
-              <h2 className="text-2xl font-semibold mb-3">Combined Phonemes</h2>
-              <p className="text-gray-600 mb-6">
-                Practice combined phonemes (consonant and vowel) in the language
-                of Tunic
-              </p>
+              <div>
+                <h2 className="text-2xl font-semibold mb-3">
+                  Combined Phonemes
+                </h2>
+                <p className="text-gray-600 mb-6">
+                  Practice combined phonemes (consonant and vowel) in the
+                  language of Tunic
+                </p>
+              </div>
               <Button className="w-full">Practice Combined</Button>
             </CardContent>
           </Card>
@@ -59,14 +65,16 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({ onSelectMode }) => {
             className="hover:shadow-lg transition-shadow cursor-pointer"
             onClick={() => onSelectMode(GameMode.WORD)}
           >
-            <CardContent className="p-8 text-center">
+            <CardContent className="p-8 text-center flex flex-col h-full justify-between">
               <div className="w-16 h-16 bg-green-500 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <span className="text-white font-bold text-xl">3</span>
               </div>
-              <h2 className="text-2xl font-semibold mb-3">Whole Words</h2>
-              <p className="text-gray-600 mb-6">
-                Practice complete words in the language of Tunic
-              </p>
+              <div>
+                <h2 className="text-2xl font-semibold mb-3">Whole Words</h2>
+                <p className="text-gray-600 mb-6">
+                  Practice complete words in the language of Tunic
+                </p>
+              </div>
               <Button className="w-full">Practice Words</Button>
             </CardContent>
           </Card>

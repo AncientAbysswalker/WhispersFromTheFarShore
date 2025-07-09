@@ -61,7 +61,7 @@ let ipaDict: Record<string, string[]> = {};
 // Function to load IPA dictionary
 async function loadIPADict() {
   try {
-    const response = await fetch("/src/ipa/ipa_dict.json");
+    const response = await fetch("/ipa_dict.json");
     const data = await response.json();
     ipaDict = data;
     console.log("IPA Dictionary loaded for word mode:", Object.keys(ipaDict).length, "words");

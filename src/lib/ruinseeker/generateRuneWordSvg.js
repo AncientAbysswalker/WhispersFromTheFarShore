@@ -6,7 +6,7 @@ import { runeStyle, vowelStyle } from "./helpers/constants.js";
 // If this file is served from /src/lib/ruinseeker/, and your ipa_dictionary.json is in /src/ipa/,
 // use the following path:
 async function loadIPADict() {
-  return await fetch("src/ipa/ipa_dict.json")
+  return await fetch("/ipa_dict.json")
     .then((response) => response.json())
     .then((json) => {
       console.log("IPA Dictionary was successfully loaded");

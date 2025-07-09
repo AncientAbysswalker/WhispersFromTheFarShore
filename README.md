@@ -93,4 +93,8 @@ npm install
 
 # Start development server
 npm run dev
+
+# Build react to JS
+npm run build
+
 ```

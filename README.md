@@ -53,6 +53,7 @@ This project was **almost completely written with AI** as part of a personal exp
 - **Framework integration**: Difficulty with less mainstream libraries, even with documentation
 - **Forgetting framework**: Sometimes AI forgets what frameworks are being used and will do thing manually - such as not using Lucide
 - **Legacy library support**: Had to manually implement SVG.js integration despite it being a known library
+- **SVG Viewbox**: Had to manually add the SVG viewbox as AI couldn't figure out how to do it, even with explicit prompting
 - **Debugging limitations**: Cannot always root cause bugs even with full stack traces and detailed behavior descriptions
 
 #### 🔧 Technical Challenges

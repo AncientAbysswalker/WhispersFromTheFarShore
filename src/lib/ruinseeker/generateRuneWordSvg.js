@@ -32,7 +32,7 @@ const MODE_WORD = "mode2"; // Word-based generation
 export function generateRuneWordSvg(mode, text) {
   // Handle array input for combined phonemes
   let textKey, phonemeArray;
-  
+
   if (Array.isArray(text)) {
     // For combined mode - text is an array of phonemes
     textKey = text.join(""); // Create a key for the dictionary
@@ -79,6 +79,10 @@ export function generateRuneWordSvg(mode, text) {
       draw.rune(props, phonemeArray);
       svgTag.setAttribute("width", 2 * 0.866 * 30 + 4);
       svgTag.setAttribute("height", props.fullHeight);
+      svgTag.setAttribute(
+        "viewBox",
+        `0 0 ${2 * 0.866 * 30 + 4} ${props.fullHeight}`
+      );
 
       // Get the SVG element
       svgString = container.innerHTML;
@@ -91,6 +95,10 @@ export function generateRuneWordSvg(mode, text) {
 
       svgTag.setAttribute("width", 2 * 0.866 * 30 * runeWord.runes.length + 4);
       svgTag.setAttribute("height", props.fullHeight);
+      svgTag.setAttribute(
+        "viewBox",
+        `0 0 ${2 * 0.866 * 30 * runeWord.runes.length + 4} ${props.fullHeight}`
+      );
 
       svgString = container.innerHTML;
     }

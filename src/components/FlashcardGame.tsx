@@ -4,7 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Navigation } from "./Navigation";
 import { getCards, getSvg } from "../utils/mockData";
 import { addWrongAnswer, removeWrongAnswer } from "../utils/localStorage";
-import { GameMode, GameModeType, getModeDisplayName, getModeValue } from "@/types/modes";
+import {
+  GameMode,
+  GameModeType,
+  getModeDisplayName,
+  getModeValue,
+} from "@/types/modes";
 
 interface FlashcardGameProps {
   mode: GameModeType;
@@ -199,19 +204,15 @@ export const FlashcardGame: React.FC<FlashcardGameProps> = ({
                 <div className="text-center w-full">
                   {mode === GameMode.SIMPLE || mode === GameMode.COMBINED ? (
                     <>
-                      <div className="text-2xl font-semibold mb-2">
-                        {currentCard.text}
-                      </div>
-                      <div className="text-sm text-gray-500 mb-2">
+                      <div className="flashcard-title">{currentCard.text}</div>
+                      <div className="flashcard-subtitle mb-2">
                         {currentCard.subtext}
                       </div>
                     </>
                   ) : (
                     <>
-                      <div className="text-2xl font-semibold mb-2">
-                        {currentCard.text}
-                      </div>
-                      <div className="text-sm text-gray-500">
+                      <div className="flashcard-title">{currentCard.text}</div>
+                      <div className="flashcard-subtitle">
                         {currentCard.subtext}
                       </div>
                     </>
